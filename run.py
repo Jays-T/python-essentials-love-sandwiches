@@ -45,15 +45,64 @@ end program
 """
 
 
+def start_program():
+    sales_data = get_sales_data()
+
+    is_six = validate_length(sales_data)
+
+    if not is_six:
+        start_program()
+        return
+    
+    sales_data_as_int = convert_to_int(sales_data)
+    
+    if not sales_data_as_int:
+        start_program()
+        return
+    
+    print(f"Your sales data is: {sales_data_as_int}")
+
 def get_sales_data():
     """
     Get sales figures from user input
+    Data must be six values
+    Values must be convertible to Int
     """
-    print("Welcome to love sandwiches.")
-    print("Data should be six numbers separated by commas.\n")
+    print("Welcome to love sandwiches. Data should be six numbers separated by commas.\n")
     print("Example: 10,20,30,40,50,60\n")
 
-    sales_data_str = input("Enter your data here: \n")
-    print(f"The data provided is: {sales_data_str}")
+    data_str = input("Enter your data here: \n")
+    data_split = data_str.split(',')
+    return data_split
 
-get_sales_data()
+
+def validate_length(data_string):
+    """
+    Convert all string values to integer.
+    Raise ValueError if data_string is not exactly six values
+    """
+    try:
+        if len(data_string) != 6:
+            raise ValueError(
+                f"Exactly 6 values required, you provided {len(data_string)}"
+            )
+    except ValueError as e:
+        print(f"Invalid input: {e}, please try again.\n")
+        return False
+    
+    return True
+
+
+def convert_to_int(data_string):
+    """
+    Convert all string values to integer.
+    Raise ValueError if data_string cannot be converted to Int
+    """
+    try:
+        values_as_int = [int(value) for value in data_string]
+    except ValueError as e:
+        print(f"Invalid input: {e}, please try again.\n")
+        return False
+    return values_as_int
+
+start_program()
