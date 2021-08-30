@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from validators import validate_length, convert_to_int
 
 
 SCOPE = [
@@ -44,23 +45,30 @@ Yes = go to step 2
 end program
 """
 
-
 def start_program():
+    """
+    Get sales data
+    """
     sales_data = get_sales_data()
 
+    """
+    Should be six values
+    """
     is_six = validate_length(sales_data)
-
     if not is_six:
         start_program()
         return
     
+    """
+    Should be able to convert str to int
+    """
     sales_data_as_int = convert_to_int(sales_data)
-    
     if not sales_data_as_int:
         start_program()
         return
     
     print(f"Your sales data is: {sales_data_as_int}")
+
 
 def get_sales_data():
     """
@@ -76,33 +84,6 @@ def get_sales_data():
     return data_split
 
 
-def validate_length(data_string):
-    """
-    Convert all string values to integer.
-    Raise ValueError if data_string is not exactly six values
-    """
-    try:
-        if len(data_string) != 6:
-            raise ValueError(
-                f"Exactly 6 values required, you provided {len(data_string)}"
-            )
-    except ValueError as e:
-        print(f"Invalid input: {e}, please try again.\n")
-        return False
-    
-    return True
 
-
-def convert_to_int(data_string):
-    """
-    Convert all string values to integer.
-    Raise ValueError if data_string cannot be converted to Int
-    """
-    try:
-        values_as_int = [int(value) for value in data_string]
-    except ValueError as e:
-        print(f"Invalid input: {e}, please try again.\n")
-        return False
-    return values_as_int
 
 start_program()
