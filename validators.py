@@ -1,6 +1,5 @@
 def validate_length(data_string):
     """
-    Convert all string values to integer.
     Raise ValueError if data_string is not exactly six values
     """
     try:
@@ -11,7 +10,7 @@ def validate_length(data_string):
     except ValueError as e:
         print(f"Invalid input: {e}, please try again.\n")
         return False
-    
+    print("Length is valid!")
     return True
 
 
@@ -25,4 +24,5 @@ def convert_to_int(data_string):
     except ValueError as e:
         print(f"Invalid input: {e}, please try again.\n")
         return False
+    print("Data is valid!")
     return values_as_int
