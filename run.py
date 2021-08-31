@@ -1,18 +1,6 @@
-import gspread
-from google.oauth2.service_account import Credentials
+from update_worksheets import update_sales_worksheet
 from validators import validate_length, convert_to_int
 
-
-SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-    ]
-
-CREDS = Credentials.from_service_account_file('creds.json')
-SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
 """
 Main functions
@@ -45,6 +33,23 @@ Yes = go to step 2
 end program
 """
 
+def welcome():
+    """
+    Welcome message
+    """
+    print("Welcome to love sandwiches\n")
+    print("Update your daily sales totals,\ncalculate surplus numbers.")
+    print("Calculate the daily average sales over the last 5 market days,")
+    print("and get stock recommendations")
+    begin_program = input("Write 'start' and then hit enter to begin.... or hit enter to close the program\n")
+
+    if begin_program == "start":
+        start_program()
+    else:
+        print("Alright, we'll calculate the stock some other time.")
+        return
+
+
 def start_program():
     """
     Get sales data
@@ -68,6 +73,13 @@ def start_program():
         return
     
     print(f"Your sales data is: {sales_data_as_int}")
+    print("Is this correct? ")
+    check_input = input("Write 'yes' and hit enter to update sales data,\n Write 'no', 'cancel' or leave blank and hit enter to start again...\n")
+    if check_input == "yes":
+        update_sales_worksheet(sales_data_as_int)
+    else:
+        start_program()
+
 
 
 def get_sales_data():
@@ -76,7 +88,7 @@ def get_sales_data():
     Data must be six values
     Values must be convertible to Int
     """
-    print("Welcome to love sandwiches. Data should be six numbers separated by commas.\n")
+    print("Data must be six numbers separated by commas.")
     print("Example: 10,20,30,40,50,60\n")
 
     data_str = input("Enter your data here: \n")
@@ -85,5 +97,4 @@ def get_sales_data():
 
 
 
-
-start_program()
+welcome()
