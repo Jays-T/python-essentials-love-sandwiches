@@ -42,13 +42,16 @@ def start_program():
 
     print(f"Your sales data is: {sales_data}")
     print("Is this correct? ")
+
     check_input = input("Write 'yes' and hit enter to update sales data,\n Write 'no', 'cancel' or leave blank and hit enter to start again...\n")
     if check_input == "yes":
         update_sales_worksheet(sales_data)
     else:
         start_program()
     
-    calculate_surplus_data(sales_data)
+    surplus_data = calculate_surplus_data(sales_data)
+
+    print(surplus_data)
 
 
 
@@ -62,17 +65,18 @@ def get_sales_data():
         print("Data must be six numbers separated by commas.")
         print("Example: 10,20,30,40,50,60\n")
 
-        data_str = input("Enter your data here: \n")
-        data_split = data_str.split(',')
+        data_as_str = input("Enter your data here: \n")
+        data_split = data_as_str.split(',')
         """
         Should be six values,
         Should be able to convert str to int
         """
         if validate_length(data_split):
-            if convert_to_int(data_split):
+            data_as_int = convert_to_int(data_split)
+            if data_as_int:
                 break
 
-    return data_split
+    return data_as_int
 
 
 def main():
