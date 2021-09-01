@@ -44,8 +44,9 @@ def calculate_surplus_data(sales_row):
     for name, sales, stock in zip(sandwich_names, sales_row, last_stock_row):
         surplus = int(stock) - sales
         stock_surplus.append(surplus)
-        print(f"| Name: {name} - Sold: {sales} - Stock: {stock}")
-
+        print(f"| Name: {name} - Stock: {stock} - Sold: {sales} = Remaining stock: {int(stock) - int(sales)}")
+    
+    print("\n")
     # print(f"Stock row: {last_stock_row}.")
     # print(f"sales_row: {sales_row}")
     return stock_surplus
@@ -53,5 +54,4 @@ def calculate_surplus_data(sales_row):
 
 
 def setup_subscribers():
-    subscribe('update_sales', update_worksheet)
-    subscribe('update_surplus', update_worksheet)
+    subscribe('update_sheet', update_worksheet)

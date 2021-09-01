@@ -51,14 +51,18 @@ def start_program():
         print(f"Your sales data is: {sales_data}")
         print("Is this correct? ")
 
-        check_input = input("Write 'yes' and hit enter to update sales data,\n Write 'no', 'cancel' or leave blank and hit enter to start again...\n")
+        check_input = input("Write 'yes' and hit enter to update sales data...\nWrite 'no', 'cancel' or leave blank and hit enter to input data again...\nWrite 'exit' and hit enter to exit the program...\n")
         if check_input == "yes":
-            post_event("update_sales", "sales", sales_data)
             break
+        if check_input == "exit":
+            print("Exiting.....\nThank you for using Love Sandwiches.")
+            return
 
+    post_event("update_sheet", "sales", sales_data)
     surplus_data = calculate_surplus_data(sales_data)
+    post_event("update_sheet", "surplus", surplus_data)
 
-    post_event("update_surplus", "surplus", surplus_data)
+    print("Thank you for using Love Sandwiches!")
 
 
 def get_sales_data():
