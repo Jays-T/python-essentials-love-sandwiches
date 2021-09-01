@@ -2,6 +2,9 @@ import gspread
 from google.oauth2.service_account import Credentials
 from pprint import pprint
 
+from events import subscribe
+
+
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -14,15 +17,15 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
 
-def update_sales_worksheet(data):
+def update_worksheet(sheet, data):
     """
-    Add new row to sales worksheet
+    Add new row to worksheet
     Update with list data provided
     """
-    print("Updating sales worksheet....\n")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("Sales worksheet successfully updated!\n")
+    print(f"Updating {sheet} worksheet....\n")
+    worksheet_to_update = SHEET.worksheet(sheet)
+    worksheet_to_update.append_row(data)
+    print(f"{sheet} worksheet successfully updated!\n")
 
 
 def calculate_surplus_data(sales_row):
@@ -46,3 +49,9 @@ def calculate_surplus_data(sales_row):
     # print(f"Stock row: {last_stock_row}.")
     # print(f"sales_row: {sales_row}")
     return stock_surplus
+
+
+
+def setup_subscribers():
+    subscribe('update_sales', update_worksheet)
+    subscribe('update_surplus', update_worksheet)
