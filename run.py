@@ -1,5 +1,7 @@
-from updaters_calculators import update_sales_worksheet, calculate_surplus_data
+from updaters_calculators import calculate_surplus_data, setup_subscribers
 from validators import validate_length, convert_to_int
+from events import post_event
+
 
 
 """
@@ -33,26 +35,30 @@ Yes = go to step 2
 end program
 """
 
+"""
+Use post_event to update worksheets
+Parameters:  post_event(event_type: str, worksheet: str, data)
+"""
+
 
 def start_program():
     """
     Get sales data
     """
-    sales_data = get_sales_data()
+    while True:
+        sales_data = get_sales_data()
 
-    print(f"Your sales data is: {sales_data}")
-    print("Is this correct? ")
+        print(f"Your sales data is: {sales_data}")
+        print("Is this correct? ")
 
-    check_input = input("Write 'yes' and hit enter to update sales data,\n Write 'no', 'cancel' or leave blank and hit enter to start again...\n")
-    if check_input == "yes":
-        update_sales_worksheet(sales_data)
-    else:
-        start_program()
-    
+        check_input = input("Write 'yes' and hit enter to update sales data,\n Write 'no', 'cancel' or leave blank and hit enter to start again...\n")
+        if check_input == "yes":
+            post_event("update_sales", "sales", sales_data)
+            break
+
     surplus_data = calculate_surplus_data(sales_data)
 
-    print(surplus_data)
-
+    post_event("update_surplus", "surplus", surplus_data)
 
 
 def get_sales_data():
@@ -83,6 +89,8 @@ def main():
     """
     Welcome message
     """
+    setup_subscribers()
+
     print("Welcome to love sandwiches\n")
     print("Update your daily sales totals,\ncalculate surplus numbers.")
     print("Calculate the daily average sales over the last 5 market days,")
