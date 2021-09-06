@@ -1,7 +1,6 @@
 from updaters_calculators import calculate_surplus_data, setup_subscribers
-from validators import validate_length, convert_to_int
-from events import post_event
-
+from events import post_event, return_data_event
+from getters import get_sales_data, get_last_5_entries, setup_getter_subscribers
 
 
 """
@@ -59,34 +58,15 @@ def start_program():
             return
 
     post_event("update_sheet", "sales", sales_data)
-    surplus_data = calculate_surplus_data(sales_data)
+
+    surplus_data = return_data_event("return_surplus", sales_data)
+
     post_event("update_sheet", "surplus", surplus_data)
 
-    print("Thank you for using Love Sandwiches!")
+    last_5_day_sales = return_data_event("get_last_5_day_sales", "sales")
 
-
-def get_sales_data():
-    """
-    Get sales figures from user input
-    Data must be six values
-    Values must be convertible to Int
-    """
-    while True:
-        print("Data must be six numbers separated by commas.")
-        print("Example: 10,20,30,40,50,60\n")
-
-        data_as_str = input("Enter your data here: \n")
-        data_split = data_as_str.split(',')
-        """
-        Should be six values,
-        Should be able to convert str to int
-        """
-        if validate_length(data_split):
-            data_as_int = convert_to_int(data_split)
-            if data_as_int:
-                break
-
-    return data_as_int
+    print("Last 5 day sales shown above....")
+    print("Thank you for using Love Sandwiches data automation!")
 
 
 def main():
@@ -94,8 +74,9 @@ def main():
     Welcome message
     """
     setup_subscribers()
+    setup_getter_subscribers()
 
-    print("Welcome to love sandwiches\n")
+    print("Welcome to love sandwiches data automation\n")
     print("Update your daily sales totals,\ncalculate surplus numbers.")
     print("Calculate the daily average sales over the last 5 market days,")
     print("and get stock recommendations\n")
