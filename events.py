@@ -17,3 +17,15 @@ def post_event(event_type: str, sheet, data):
         return
     for fn in subscribers[event_type]:
         fn(sheet, data)
+
+
+def return_data_event(event_type: str, data):
+    """
+    run data return function based on event_type if found in subscribers
+    return data from said function
+    """
+    if not event_type in subscribers:
+        return
+    for fn in subscribers[event_type]:
+        data_returned = fn(data)
+        return data_returned
