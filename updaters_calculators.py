@@ -1,20 +1,7 @@
-import gspread
-from google.oauth2.service_account import Credentials
+from scope import SHEET
 from pprint import pprint
 
 from events import subscribe
-
-
-SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-    ]
-
-CREDS = Credentials.from_service_account_file('creds.json')
-SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
 
 def update_worksheet(sheet, data):
@@ -44,14 +31,12 @@ def calculate_surplus_data(sales_row):
     for name, sales, stock in zip(sandwich_names, sales_row, last_stock_row):
         surplus = int(stock) - sales
         stock_surplus.append(surplus)
-        print(f"| Name: {name} - Stock: {stock} - Sold: {sales} = Remaining stock: {int(stock) - int(sales)}")
+        print(f"| Name: {name} - Stock: {stock} - Sold: {sales} = Remaining stock: {surplus}")
     
     print("\n")
-    # print(f"Stock row: {last_stock_row}.")
-    # print(f"sales_row: {sales_row}")
     return stock_surplus
-
 
 
 def setup_subscribers():
     subscribe('update_sheet', update_worksheet)
+    subscribe('return_surplus', calculate_surplus_data)
