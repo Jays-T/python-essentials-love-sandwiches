@@ -39,15 +39,16 @@ def get_last_5_entries(sheet):
     sales = SHEET.worksheet(sheet)
 
     columns = []
-    print("Showing sales from last 5 days....\n")
+    print("Collecting sales numbers from last 5 days....\n")
     for col in range(1,7):
         column = sales.col_values(col)
         sandwich_name = column[0]
-        columns.append(sandwich_name)
         sandwiches_sold = column[-5:]
+        
         columns.append(sandwiches_sold)
 
         print(f"| Name: {sandwich_name} - Last 5 day sales: {sandwiches_sold}")
+    print("\nLast 5 day sales shown above....\n")
     return columns
 
 
