@@ -37,6 +37,22 @@ def calculate_surplus_data(sales_row):
     return stock_surplus
 
 
+def calculate_stock_data(sales_column):
+    """
+    Calculate average stock for each item type, adds 10%
+    """
+    print("Calculating stock data....\n")
+    new_stock_data = []
+    for column in sales_column:
+        int_column = [int(num) for num in column]
+        average_sales = sum(int_column) / len(int_column)
+        suggested_stock = average_sales * 1.1
+        new_stock_data.append(round(suggested_stock))
+
+    return new_stock_data
+
+
 def setup_subscribers():
     subscribe('update_sheet', update_worksheet)
     subscribe('return_surplus', calculate_surplus_data)
+    subscribe('calculate_stock', calculate_stock_data)
