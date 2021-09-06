@@ -1,4 +1,4 @@
-from updaters_calculators import calculate_surplus_data, setup_subscribers
+from updaters_calculators import setup_subscribers
 from events import post_event, return_data_event
 from getters import get_sales_data, get_last_5_entries, setup_getter_subscribers
 
@@ -65,7 +65,9 @@ def start_program():
 
     last_5_day_sales = return_data_event("get_last_5_day_sales", "sales")
 
-    print("Last 5 day sales shown above....")
+    calculate_stock = return_data_event("calculate_stock", last_5_day_sales)
+    
+    print(calculate_stock)
     print("Thank you for using Love Sandwiches data automation!")
 
 
