@@ -97,6 +97,7 @@ def start_program():
     show_data_event("get_stock_suggestions", "stock")
 
     print(f"\nAll done {user}! Thank you for using Love Sandwiches data automation!\n")
+    return
 
 
 def main():
@@ -110,13 +111,14 @@ def main():
     print("Update your daily sales totals,\ncalculate surplus numbers.")
     print("Calculate the daily average sales over the last 5 market days,")
     print("and get stock recommendations\n")
-    begin_program = input("Write 'start' and then hit enter to begin.... or hit enter to close the program\n")
+    begin_program = input("Write 'start' and then hit enter to begin....\nor hit enter to close the program\n")
 
     if begin_program == "start":
         start_program()
     else:
         print("Alright, we'll calculate the stock some other time.")
         return
+    return
 
 
 main()
