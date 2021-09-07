@@ -1,6 +1,5 @@
 from events import subscribe
 from scope import SHEET
-from pprint import pprint
 from validators import validate_length, convert_to_int
 
 def get_sales_data(user):

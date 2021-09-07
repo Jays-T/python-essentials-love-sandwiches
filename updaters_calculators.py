@@ -1,5 +1,4 @@
 from scope import SHEET
-from pprint import pprint
 
 from events import subscribe
 
