@@ -3,14 +3,14 @@ from scope import SHEET
 from pprint import pprint
 from validators import validate_length, convert_to_int
 
-def get_sales_data():
+def get_sales_data(user):
     """
     Get sales figures from user input
     Data must be six values
     Values must be convertible to Int
     """
     while True:
-        print("Data must be six numbers separated by commas.")
+        print(f"{user}, your data must be six numbers separated by commas.")
         print("Example: 10,20,30,40,50,60\n")
 
         data_as_str = input("Enter your data here: \n")
@@ -53,4 +53,5 @@ def get_last_5_entries(sheet):
 
 
 def setup_getter_subscribers():
+    subscribe('get_sales', get_sales_data)
     subscribe('get_last_5_day_sales', get_last_5_entries)

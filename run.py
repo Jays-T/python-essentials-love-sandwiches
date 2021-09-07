@@ -1,6 +1,6 @@
-from updaters_calculators import setup_subscribers
+from updaters_calculators import setup_calc_updater_subscribers
+from getters import setup_getter_subscribers
 from events import post_event, return_data_event
-from getters import get_sales_data, get_last_5_entries, setup_getter_subscribers
 
 
 """
@@ -35,8 +35,25 @@ end program
 """
 
 """
-Use post_event to update worksheets
-Parameters:  post_event(event_type: str, worksheet: str, data)
+If adding functionality to start_program
+First setup subscribers:
+Parameters: subscribe(event_type: str, fn)
+
+Use post_event to call updaters:
+e.g: Update worksheets
+
+Event types: update_sheet
+
+Use return_data_event to call calculators:
+    * pass data
+    * run calculations
+    * return calculated data
+e.g: calculate sales, calculate surplus, calculate stock
+
+Event types: return_surplus, calculate_stock, get_last_5_day_sales
+
+Parameters:  ....event(event_type: str, worksheet: str, data)
+
 """
 
 
@@ -44,17 +61,23 @@ def start_program():
     """
     Get sales data
     """
-    while True:
-        sales_data = get_sales_data()
+    current_user = {}
+    user = input("Please input your name\n")
+    current_user["Name:"] = user
+    user = current_user["Name:"]
 
-        print(f"Your sales data is: {sales_data}")
+    print(f"Welcome {user}!\n")
+    while True:
+        sales_data = return_data_event("get_sales", user)
+
+        print(f"{user} your sales data is: {sales_data}")
         print("Is this correct? ")
 
         check_input = input("Write 'yes' and hit enter to update sales data...\nWrite 'no', 'cancel' or leave blank and hit enter to input data again...\nWrite 'exit' and hit enter to exit the program...\n")
         if check_input == "yes":
             break
         if check_input == "exit":
-            print("Exiting.....\nThank you for using Love Sandwiches.")
+            print("Exiting.....\nThank you for using Love Sandwiches data automation.")
             return
 
     post_event("update_sheet", "sales", sales_data)
@@ -65,17 +88,22 @@ def start_program():
 
     last_5_day_sales = return_data_event("get_last_5_day_sales", "sales")
 
-    calculate_stock = return_data_event("calculate_stock", last_5_day_sales)
+    calculated_stock = return_data_event("calculate_stock", last_5_day_sales)
     
-    print(calculate_stock)
-    print("Thank you for using Love Sandwiches data automation!")
+    post_event("update_sheet", "stock", calculated_stock)
+
+    print(f"{user} we'll recommend your stock numbers...\n")
+
+    stock_suggestions = return_data_event("get_stock_suggestions", "stock")
+
+    print(f"Thank you for using Love Sandwiches data automation {user}!")
 
 
 def main():
     """
     Welcome message
     """
-    setup_subscribers()
+    setup_calc_updater_subscribers()
     setup_getter_subscribers()
 
     print("Welcome to love sandwiches data automation\n")
@@ -89,5 +117,6 @@ def main():
     else:
         print("Alright, we'll calculate the stock some other time.")
         return
+
 
 main()

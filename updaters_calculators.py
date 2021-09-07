@@ -52,7 +52,25 @@ def calculate_stock_data(sales_column):
     return new_stock_data
 
 
-def setup_subscribers():
+def show_final_stock_suggestions(sheet):
+    """
+    Return next day stock suggestions for each sandwich
+    """
+    print(f"Coalating results for stock suggestions....\n")
+    stock = SHEET.worksheet(sheet).get_all_values()
+    sandwich_names = stock[0]
+    last_stock_row = stock[-1]
+
+    stock_suggestions = {}
+    print("Suggest stock numbers below....\n")
+    for sandwich_name, stock_num in zip(sandwich_names, last_stock_row):
+        print(f"| Name: {sandwich_name} - Suggested amount to stock: {stock_num}")
+        stock_suggestions[sandwich_name] = stock_num
+
+    return stock_suggestions
+
+def setup_calc_updater_subscribers():
     subscribe('update_sheet', update_worksheet)
     subscribe('return_surplus', calculate_surplus_data)
     subscribe('calculate_stock', calculate_stock_data)
+    subscribe('get_stock_suggestions', show_final_stock_suggestions)
