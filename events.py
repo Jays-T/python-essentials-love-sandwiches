@@ -19,6 +19,17 @@ def post_event(event_type: str, sheet, data):
         fn(sheet, data)
 
 
+def show_data_event(event_type: str, sheet):
+    """
+    run function based on event_type if found in subscribers
+    get and show data from said function
+    """
+    if not event_type in subscribers:
+        return
+    for fn in subscribers[event_type]:
+        fn(sheet)
+
+
 def return_data_event(event_type: str, data):
     """
     run data return function based on event_type if found in subscribers

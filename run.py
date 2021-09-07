@@ -1,6 +1,6 @@
 from updaters_calculators import setup_calc_updater_subscribers
 from getters import setup_getter_subscribers
-from events import post_event, return_data_event
+from events import post_event, return_data_event, show_data_event
 
 
 """
@@ -94,9 +94,9 @@ def start_program():
 
     print(f"{user} we'll recommend your stock numbers...\n")
 
-    stock_suggestions = return_data_event("get_stock_suggestions", "stock")
+    show_data_event("get_stock_suggestions", "stock")
 
-    print(f"Thank you for using Love Sandwiches data automation {user}!")
+    print(f"\nAll done {user}! Thank you for using Love Sandwiches data automation!\n")
 
 
 def main():
